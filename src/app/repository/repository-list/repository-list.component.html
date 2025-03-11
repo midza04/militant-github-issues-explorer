@@ -1,0 +1,39 @@
+@if (loading()) {
+  <div>Loading repositories...</div>
+}
+@if (error()) {
+  <div class="error">{{ error() }}</div>
+}
+@if (!loading() && !error()) {
+  <lx-card>
+    <h2 class="list-view-heading">Top GitHub Repositories</h2>
+    <div class="list-view">
+      <ul>
+        @for (repository of repositories; track repository.node.name) {
+          <li>
+            <a
+              [routerLink]="[
+                '/repositories',
+                repository.node.owner.login,
+                repository.node.name,
+              ]"
+            >
+              <strong>
+                {{ repository.node.owner.login }}/{{ repository.node.name }}
+              </strong>
+            </a>
+            <span>
+              Stars: <strong>{{ repository.node.stargazerCount }}</strong>
+            </span>
+          </li>
+        }
+      </ul>
+
+      <lx-pagination
+        [pageInfo]="pageInfo"
+        (nextPage)="fetchNextPage($event)"
+        (previousPage)="fetchPreviousPage($event)"
+      />
+    </div>
+  </lx-card>
+}

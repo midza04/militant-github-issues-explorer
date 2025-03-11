@@ -8,7 +8,6 @@ import {
 import { Router } from '@angular/router';
 import { TokenService } from './data-access/token.service';
 import { CardComponent } from '../shared/basic-components/card/card.component';
-import { RepositoryResponse } from '../repository/interfaces/repository.interface';
 import { TokenValidationResponse } from './interfaces/token-entry.interface';
 
 @Component({
