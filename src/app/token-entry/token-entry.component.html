@@ -1,0 +1,18 @@
+<h1 class="heading">GitHub Issues Explorer</h1>
+<p class="description">
+  Enter your API Token to start browsing issues of public repositories
+</p>
+<lx-card class="token-form">
+  <form [formGroup]="tokenForm" (ngSubmit)="submitToken()">
+    <label for="token" class="label">Your API Token:</label>
+    <input id="token" formControlName="token" type="text" class="input" />
+
+    <button type="submit" [disabled]="tokenForm.invalid" class="button">
+      Start browsing
+    </button>
+
+    @if (errorMessage) {
+      <div class="error-message">{{ errorMessage }}</div>
+    }
+  </form>
+</lx-card>
