@@ -1,0 +1,33 @@
+@if (loading) {
+  <div>Loading repository details...</div>
+}
+
+@if (error) {
+  <div class="error">{{ error }}</div>
+}
+
+@if (!loading && !error && repository) {
+  <lx-card>
+    <div>
+      <h2>{{ repository.owner.login }}/{{ repository.name }}</h2>
+
+      <h3>Issues</h3>
+      <ul>
+        @for (issueEdge of issues; track issueEdge.node.title) {
+          <li>
+            <a [href]="issueEdge.node.url" target="_blank">{{
+              issueEdge.node.title
+            }}</a>
+            <span>{{ issueEdge.node.createdAt | date }}</span>
+          </li>
+        }
+      </ul>
+
+      <lx-pagination
+        [pageInfo]="pageInfo"
+        (nextPage)="fetchNextPage($event)"
+        (previousPage)="fetchPreviousPage($event)"
+      />
+    </div>
+  </lx-card>
+}
