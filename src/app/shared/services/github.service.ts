@@ -5,8 +5,8 @@ import {
   fetchRepositoriesDetailQuery,
   fetchRepositoriesQuery,
   loginQuery,
-} from './queries/queries';
-import { RepositoryDetailsParams } from '../../repository/interfaces/repository.interface';
+} from './queries/repositories.queries';
+import { RepositoryParams } from '../../repository/interfaces/repository.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -27,11 +27,8 @@ export class GitHubService {
       .pipe(map((result) => result.data));
   }
 
-  fetchRepositories(
-    token: string | undefined,
-    cursor: string | null = null,
-    direction: 'after' | 'before' = 'after',
-  ): Observable<any> {
+  fetchRepositories(params: RepositoryParams): Observable<any> {
+    const { cursor = null, direction = 'after' } = params;
     const variables =
       direction === 'after'
         ? { after: cursor, before: null, first: 10, last: null }
@@ -40,14 +37,11 @@ export class GitHubService {
     return this.apollo.query({
       query: fetchRepositoriesQuery,
       variables,
-      context: {
-        headers: { Authorization: `Bearer ${token}` },
-      },
     });
   }
 
-  fetchRepositoryDetails(params: RepositoryDetailsParams): Observable<any> {
-    const { token, owner, name, cursor = null, direction = 'after' } = params;
+  fetchRepositoryDetails(params: RepositoryParams): Observable<any> {
+    const { owner, name, cursor = null, direction = 'after' } = params;
     const variables =
       direction === 'after'
         ? { owner, name, after: cursor, before: null, first: 10, last: null }
@@ -56,9 +50,6 @@ export class GitHubService {
     return this.apollo.query({
       query: fetchRepositoriesDetailQuery,
       variables,
-      context: {
-        headers: { Authorization: `Bearer ${token}` },
-      },
     });
   }
 }

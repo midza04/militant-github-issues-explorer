@@ -34,8 +34,9 @@ export class TokenEntryComponent {
     this.tokenService.validateToken(token).subscribe({
       next: (response: TokenValidationResponse) => {
         if (response.viewer.login) {
-          this.tokenService.setToken(token);
-          this.router.navigate(['/repositories']);
+          this.tokenService.setToken(token).then(() => {
+            this.router.navigate(['/repositories']);
+          });
         } else {
           this.tokenService.clearToken();
           this.errorMessage = 'Invalid API token. Please try again.';

@@ -11,7 +11,7 @@ export class TokenService {
 
   constructor(private githubService: GitHubService) {}
 
-  setToken(token: string) {
+  async setToken(token: string) {
     this.token = token;
   }
 
