@@ -5,7 +5,13 @@
 <lx-card class="token-form">
   <form [formGroup]="tokenForm" (ngSubmit)="submitToken()">
     <label for="token" class="label">Your API Token:</label>
-    <input id="token" formControlName="token" type="text" class="input" />
+    <input
+      aria-label="Enter token"
+      id="token"
+      formControlName="token"
+      type="text"
+      class="input"
+    />
     @if (showValidationError()) {
       <div class="error-message">
         @if (isTokenTooShort()) {
@@ -14,6 +20,7 @@
       </div>
     }
     <button
+      aria-label="Submit token"
       id="submit"
       type="submit"
       [disabled]="tokenForm.invalid"
@@ -28,6 +35,7 @@
         generate a new token
         <br />
         <a
+          target="_blank"
           href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
           >Link to GitHub documentation
         </a>

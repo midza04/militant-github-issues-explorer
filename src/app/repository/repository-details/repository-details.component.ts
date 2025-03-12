@@ -1,15 +1,21 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  Signal,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GitHubService } from '../../shared/services/github.service';
-import { TokenService } from '../../token-entry/data-access/token.service';
 import { DatePipe } from '@angular/common';
 import { PaginationComponent } from '../../shared/basic-components/pagination/pagination.component';
 import {
   IssueEdge,
   PageInfo,
   Repository,
-  RepositoryParams,
   RepositoryDetailsResponse,
+  RepositoryParams,
 } from '../interfaces/repository.interface';
 import { CardComponent } from '../../shared/basic-components/card/card.component';
 
@@ -30,6 +36,9 @@ export class RepositoryDetailsComponent implements OnInit {
   pageInfo!: PageInfo;
   loading = signal<boolean>(false);
   error = signal<string>('');
+  showRepositoryDetails: Signal<boolean> = computed(() => {
+    return !!(!this.loading() && !this.error() && this.repository);
+  });
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
