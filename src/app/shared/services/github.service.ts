@@ -23,6 +23,7 @@ export class GitHubService {
             Authorization: `Bearer ${token}`,
           },
         },
+        fetchPolicy: 'no-cache',
       })
       .pipe(map((result) => result.data));
   }
