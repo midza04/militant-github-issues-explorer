@@ -25,6 +25,9 @@ export interface RepositoryNode {
     login: string;
   };
   stargazerCount: number;
+  createdAt: Date;
+  description: string;
+  nameWithOwner: string;
 }
 
 export interface RepositoryDetailsResponse {
@@ -60,8 +63,7 @@ export interface Issue {
   url: string;
 }
 
-export interface RepositoryDetailsParams {
-  token?: string;
+export interface RepositoryParams {
   owner?: string | null;
   name?: string | null;
   cursor?: string | null;

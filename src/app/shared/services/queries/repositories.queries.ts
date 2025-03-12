@@ -28,6 +28,9 @@ export const fetchRepositoriesQuery = gql`
               login
             }
             stargazerCount
+            createdAt
+            description
+            nameWithOwner
           }
         }
       }

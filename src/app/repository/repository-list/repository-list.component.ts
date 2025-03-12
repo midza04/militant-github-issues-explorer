@@ -5,14 +5,16 @@ import { TokenService } from '../../token-entry/data-access/token.service';
 import {
   PageInfo,
   RepositoryEdge,
+  RepositoryParams,
   RepositoryResponse,
 } from '../interfaces/repository.interface';
 import { PaginationComponent } from '../../shared/basic-components/pagination/pagination.component';
 import { CardComponent } from '../../shared/basic-components/card/card.component';
+import { NumbersPipe } from '../../utils/pipes/numbers.pipe';
 
 @Component({
   selector: 'lx-repository-list',
-  imports: [RouterLink, PaginationComponent, CardComponent],
+  imports: [RouterLink, PaginationComponent, CardComponent, NumbersPipe],
   templateUrl: './repository-list.component.html',
   styleUrl: './repository-list.component.scss',
 })
@@ -32,14 +34,15 @@ export class RepositoryListComponent implements OnInit {
   loadRepositories(cursor?: string, isPrevious = false) {
     this.loading.set(true);
     const direction = isPrevious ? 'before' : 'after';
-    const token = this.tokenService.getToken();
-
-    this.githubService.fetchRepositories(token, cursor, direction).subscribe({
+    const repositoryParams: RepositoryParams = {
+      cursor,
+      direction,
+    };
+    this.githubService.fetchRepositories(repositoryParams).subscribe({
       next: (data: RepositoryResponse) => {
         if (data && data.data && data.data.search) {
           this.repositories = data.data.search.edges;
           this.pageInfo = data.data.search.pageInfo;
-          console.log(this.pageInfo);
         } else {
           this.error.set('Unexpected API response format.');
         }
@@ -53,12 +56,10 @@ export class RepositoryListComponent implements OnInit {
   }
 
   fetchNextPage(cursor: string) {
-    console.log(cursor);
     this.loadRepositories(cursor);
   }
 
   fetchPreviousPage(cursor: string) {
-    console.log(cursor);
     this.loadRepositories(cursor, true);
   }
 }
