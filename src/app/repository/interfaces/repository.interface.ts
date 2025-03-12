@@ -63,9 +63,12 @@ export interface Issue {
   url: string;
 }
 
-export interface RepositoryParams {
+export interface RepositoryParams extends RepositoryDetailsParams {
   owner?: string | null;
   name?: string | null;
+}
+
+export interface RepositoryDetailsParams {
   cursor?: string | null;
   direction?: 'after' | 'before';
 }

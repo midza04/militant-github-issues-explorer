@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GitHubService } from '../../shared/services/github.service';
 import { TokenService } from '../../token-entry/data-access/token.service';
@@ -22,15 +22,14 @@ import { CardComponent } from '../../shared/basic-components/card/card.component
 export class RepositoryDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private githubService = inject(GitHubService);
-  private tokenService = inject(TokenService);
 
   owner?: string | null;
   repositoryName?: string | null;
   repository!: Repository;
   issues: IssueEdge[] = [];
   pageInfo!: PageInfo;
-  loading = false;
-  error?: string;
+  loading = signal<boolean>(false);
+  error = signal<string>('');
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -44,9 +43,7 @@ export class RepositoryDetailsComponent implements OnInit {
     cursor: string | null = null,
     direction: 'after' | 'before' = 'after',
   ) {
-    this.loading = true;
-    const token = this.tokenService.getToken();
-
+    this.loading.set(true);
     const repositoryDetailsParams: RepositoryParams = {
       owner: this.owner,
       name: this.repositoryName,
@@ -59,18 +56,17 @@ export class RepositoryDetailsComponent implements OnInit {
       .subscribe({
         next: (data: RepositoryDetailsResponse) => {
           if (data && data.data && data.data.repository) {
-            // Todo try and implement a store for this
             this.repository = data.data.repository;
             this.issues = this.repository.issues.edges;
             this.pageInfo = this.repository.issues.pageInfo;
           } else {
-            this.error = 'Unexpected API response format.';
+            this.error.set('Failed to load repository details');
           }
-          this.loading = false;
+          this.loading.set(false);
         },
         error: () => {
-          this.error = 'Failed to fetch repository details.';
-          this.loading = false;
+          this.error.set('Failed to fetch repository details');
+          this.loading.set(false);
         },
       });
   }
