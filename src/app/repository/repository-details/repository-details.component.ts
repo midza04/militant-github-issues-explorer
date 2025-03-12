@@ -8,7 +8,7 @@ import {
   IssueEdge,
   PageInfo,
   Repository,
-  RepositoryDetailsParams,
+  RepositoryParams,
   RepositoryDetailsResponse,
 } from '../interfaces/repository.interface';
 import { CardComponent } from '../../shared/basic-components/card/card.component';
@@ -47,8 +47,7 @@ export class RepositoryDetailsComponent implements OnInit {
     this.loading = true;
     const token = this.tokenService.getToken();
 
-    const repositoryDetailsParams: RepositoryDetailsParams = {
-      token: token,
+    const repositoryDetailsParams: RepositoryParams = {
       owner: this.owner,
       name: this.repositoryName,
       cursor,

@@ -6,13 +6,30 @@
   <form [formGroup]="tokenForm" (ngSubmit)="submitToken()">
     <label for="token" class="label">Your API Token:</label>
     <input id="token" formControlName="token" type="text" class="input" />
-
+    @if (showValidationError()) {
+      <div class="error-message">
+        @if (isTokenRequired()) {
+          <span>Token is required.</span>
+        }
+        @if (isTokenTooShort()) {
+          <span>Token must be at least 6 characters long.</span>
+        }
+      </div>
+    }
     <button type="submit" [disabled]="tokenForm.invalid" class="button">
       Start browsing
     </button>
 
-    @if (errorMessage) {
-      <div class="error-message">{{ errorMessage }}</div>
+    @if (errorMessage()) {
+      <div class="error-message">
+        The token you provided is invalid. Please follow these instructions to
+        generate a new token
+        <br />
+        <a
+          href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+          >Link to GitHub documentation
+        </a>
+      </div>
     }
   </form>
 </lx-card>

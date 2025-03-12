@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
-  FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -8,7 +8,10 @@ import {
 import { Router } from '@angular/router';
 import { TokenService } from './data-access/token.service';
 import { CardComponent } from '../shared/basic-components/card/card.component';
-import { TokenValidationResponse } from './interfaces/token-entry.interface';
+import {
+  TokenEntry,
+  TokenValidationResponse,
+} from './interfaces/token-entry.interface';
 
 @Component({
   selector: 'app-token-entry',
@@ -16,21 +19,44 @@ import { TokenValidationResponse } from './interfaces/token-entry.interface';
   templateUrl: './token-entry.component.html',
   styleUrl: './token-entry.component.scss',
 })
-export class TokenEntryComponent {
-  private form = inject(FormBuilder);
+export class TokenEntryComponent implements OnInit {
   private tokenService = inject(TokenService);
   private router = inject(Router);
-  tokenForm: FormGroup;
-  errorMessage?: string;
 
-  constructor() {
-    this.tokenForm = this.form.group({
-      token: ['', Validators.required],
+  tokenForm = new FormGroup<TokenEntry>({
+    token: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(6)],
+    }),
+  });
+  showErrorMessage = signal<boolean>(false);
+  showValidationError = signal<boolean>(false);
+
+  isTokenRequired = computed(
+    () => !!this.tokenForm.controls.token.errors?.['required'],
+  );
+  isTokenTooShort = computed(
+    () => !!this.tokenForm.controls.token.errors?.['minlength'],
+  );
+
+  ngOnInit(): void {
+    this.tokenForm.controls.token.valueChanges.subscribe(() => {
+      if (this.showErrorMessage()) {
+        this.showErrorMessage.set(false);
+      }
+      if (
+        this.tokenForm.controls.token.invalid &&
+        this.tokenForm.controls.token.touched
+      ) {
+        this.showValidationError.set(true);
+      } else {
+        this.showValidationError.set(false);
+      }
     });
   }
 
   submitToken() {
     const token = this.tokenForm.value.token;
+    if (!token) return;
     this.tokenService.validateToken(token).subscribe({
       next: (response: TokenValidationResponse) => {
         if (response.viewer.login) {
@@ -38,14 +64,17 @@ export class TokenEntryComponent {
             this.router.navigate(['/repositories']);
           });
         } else {
-          this.tokenService.clearToken();
-          this.errorMessage = 'Invalid API token. Please try again.';
+          this.displayErrorMessage(true);
         }
       },
-      error: (error) => {
-        this.tokenService.clearToken();
-        this.errorMessage = 'Invalid API token. Please try again.' + error;
+      error: () => {
+        this.displayErrorMessage(false);
       },
     });
+  }
+
+  private displayErrorMessage(state: boolean) {
+    this.tokenService.clearToken();
+    this.showErrorMessage.set(state);
   }
 }

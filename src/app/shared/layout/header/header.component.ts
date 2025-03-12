@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { GitHubService } from '../../services/github.service';
 import { TokenService } from '../../../token-entry/data-access/token.service';
 
 @Component({

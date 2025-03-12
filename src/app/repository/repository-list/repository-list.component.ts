@@ -11,16 +11,22 @@ import {
 import { PaginationComponent } from '../../shared/basic-components/pagination/pagination.component';
 import { CardComponent } from '../../shared/basic-components/card/card.component';
 import { NumbersPipe } from '../../utils/pipes/numbers.pipe';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'lx-repository-list',
-  imports: [RouterLink, PaginationComponent, CardComponent, NumbersPipe],
+  imports: [
+    RouterLink,
+    PaginationComponent,
+    CardComponent,
+    NumbersPipe,
+    DatePipe,
+  ],
   templateUrl: './repository-list.component.html',
   styleUrl: './repository-list.component.scss',
 })
 export class RepositoryListComponent implements OnInit {
   private readonly githubService = inject(GitHubService);
-  private readonly tokenService = inject(TokenService);
 
   repositories: RepositoryEdge[] = [];
   pageInfo!: PageInfo;
