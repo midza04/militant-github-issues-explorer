@@ -31,26 +31,13 @@ export class TokenEntryComponent implements OnInit {
   showErrorMessage = signal<boolean>(false);
   showValidationError = signal<boolean>(false);
 
-  isTokenRequired = computed(
-    () => !!this.tokenForm.controls.token.errors?.['required'],
-  );
   isTokenTooShort = computed(
     () => !!this.tokenForm.controls.token.errors?.['minlength'],
   );
 
   ngOnInit(): void {
     this.tokenForm.controls.token.valueChanges.subscribe(() => {
-      if (this.showErrorMessage()) {
-        this.showErrorMessage.set(false);
-      }
-      if (
-        this.tokenForm.controls.token.invalid &&
-        this.tokenForm.controls.token.touched
-      ) {
-        this.showValidationError.set(true);
-      } else {
-        this.showValidationError.set(false);
-      }
+      this.handleTokenValidationState();
     });
   }
 
@@ -68,9 +55,20 @@ export class TokenEntryComponent implements OnInit {
         }
       },
       error: () => {
-        this.displayErrorMessage(false);
+        this.displayErrorMessage(true);
       },
     });
+  }
+
+  private handleTokenValidationState(): void {
+    if (this.showErrorMessage()) {
+      this.showErrorMessage.set(false);
+    }
+
+    const control = this.tokenForm.controls.token;
+    this.showValidationError.set(
+      control.invalid && (control.touched || control.dirty),
+    );
   }
 
   private displayErrorMessage(state: boolean) {

@@ -8,9 +8,6 @@
     <input id="token" formControlName="token" type="text" class="input" />
     @if (showValidationError()) {
       <div class="error-message">
-        @if (isTokenRequired()) {
-          <span>Token is required.</span>
-        }
         @if (isTokenTooShort()) {
           <span>Token must be at least 6 characters long.</span>
         }
@@ -20,7 +17,7 @@
       Start browsing
     </button>
 
-    @if (errorMessage()) {
+    @if (showErrorMessage()) {
       <div class="error-message">
         The token you provided is invalid. Please follow these instructions to
         generate a new token
