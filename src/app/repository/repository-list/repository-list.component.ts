@@ -1,7 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GitHubService } from '../../shared/services/github.service';
-import { TokenService } from '../../token-entry/data-access/token.service';
 import {
   PageInfo,
   RepositoryEdge,
@@ -12,6 +11,8 @@ import { PaginationComponent } from '../../shared/basic-components/pagination/pa
 import { CardComponent } from '../../shared/basic-components/card/card.component';
 import { NumbersPipe } from '../../utils/pipes/numbers.pipe';
 import { DatePipe } from '@angular/common';
+import { catchError, of } from 'rxjs';
+import { LoadingState } from '../interfaces/state.interface';
 
 @Component({
   selector: 'lx-repository-list',
@@ -27,38 +28,63 @@ import { DatePipe } from '@angular/common';
 })
 export class RepositoryListComponent implements OnInit {
   private readonly githubService = inject(GitHubService);
+  state = signal<LoadingState>({
+    loading: false,
+    error: '',
+    data: null,
+  });
 
-  repositories: RepositoryEdge[] = [];
-  pageInfo!: PageInfo;
-  loading = signal(false);
-  error = signal<string>('');
+  pageInfo = computed<PageInfo>(() => {
+    return this.state().data?.data?.search?.pageInfo;
+  });
+
+  repositories = computed<RepositoryEdge[]>(() => {
+    return this.state().data.data.search.edges;
+  });
+
+  loading = computed<boolean>(() => {
+    return this.state().loading;
+  });
+
+  error = computed(() => {
+    return this.state().error;
+  });
+
+  showRepositories = computed(() => {
+    return !this.loading() && !this.error();
+  });
 
   ngOnInit(): void {
     this.loadRepositories();
   }
 
   loadRepositories(cursor?: string, isPrevious = false) {
-    this.loading.set(true);
+    this.state.update((s) => ({ ...s, loading: true }));
     const direction = isPrevious ? 'before' : 'after';
     const repositoryParams: RepositoryParams = {
       cursor,
       direction,
     };
-    this.githubService.fetchRepositories(repositoryParams).subscribe({
-      next: (data: RepositoryResponse) => {
-        if (data && data.data && data.data.search) {
-          this.repositories = data.data.search.edges;
-          this.pageInfo = data.data.search.pageInfo;
-        } else {
-          this.error.set('Unexpected API response format.');
-        }
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Failed to fetch repositories.');
-        this.loading.set(false);
-      },
-    });
+
+    this.githubService
+      .fetchRepositories(repositoryParams)
+      .pipe(
+        catchError(() => {
+          this.state.update((state) => ({
+            ...state,
+            error: 'Failed to load repositories',
+            loading: false,
+          }));
+          return of(null);
+        }),
+      )
+      .subscribe((data: RepositoryResponse) => {
+        this.state.update((state) => ({
+          ...state,
+          data,
+          loading: false,
+        }));
+      });
   }
 
   fetchNextPage(cursor: string) {

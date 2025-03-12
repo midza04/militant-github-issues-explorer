@@ -4,12 +4,12 @@
 @if (error()) {
   <div class="error">{{ error() }}</div>
 }
-@if (!loading() && !error()) {
+@if (showRepositories()) {
   <lx-card>
     <h3 class="list-view-heading">Top GitHub Repositories</h3>
     <div class="list-view">
       <table class="table">
-        @for (repository of repositories; track repository.node.name) {
+        @for (repository of repositories(); track repository.node.name) {
           <tr class="row">
             <td class="repo-info">
               <a
@@ -43,7 +43,7 @@
         }
       </table>
       <lx-pagination
-        [pageInfo]="pageInfo"
+        [pageInfo]="pageInfo()"
         (nextPage)="fetchNextPage($event)"
         (previousPage)="fetchPreviousPage($event)"
       />
