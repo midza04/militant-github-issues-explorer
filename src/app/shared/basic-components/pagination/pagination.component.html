@@ -1,8 +1,8 @@
-<div class="pagination">
-  <button (click)="onPreviousPage()" [disabled]="!pageInfo.hasPreviousPage">
+<div aria-label="pagination" class="pagination">
+  <button (click)="onPreviousPage()" [disabled]="!pageInfo().hasPreviousPage">
     Previous
   </button>
-  <button (click)="onNextPage()" [disabled]="!pageInfo.hasNextPage">
+  <button (click)="onNextPage()" [disabled]="!pageInfo().hasNextPage">
     Next
   </button>
 </div>

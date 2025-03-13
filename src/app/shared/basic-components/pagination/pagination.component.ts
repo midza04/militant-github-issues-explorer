@@ -1,9 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  input,
+  output,
 } from '@angular/core';
 import { PageInfo } from '../../../features/repository/interfaces/repository.interface';
 
@@ -15,19 +14,21 @@ import { PageInfo } from '../../../features/repository/interfaces/repository.int
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
-  @Input() pageInfo!: PageInfo;
-  @Output() nextPage = new EventEmitter<any>();
-  @Output() previousPage = new EventEmitter<any>();
+  pageInfo = input.required<PageInfo>();
+  nextPage = output<string>();
+  previousPage = output<string>();
 
   onNextPage() {
-    if (this.pageInfo.hasNextPage && this.pageInfo.endCursor) {
-      this.nextPage.emit(this.pageInfo.endCursor);
+    const pageInfo = this.pageInfo();
+    if (pageInfo.hasNextPage && pageInfo.endCursor) {
+      this.nextPage.emit(pageInfo.endCursor);
     }
   }
 
   onPreviousPage() {
-    if (this.pageInfo.hasPreviousPage && this.pageInfo.startCursor) {
-      this.previousPage.emit(this.pageInfo.startCursor);
+    const pageInfo = this.pageInfo();
+    if (pageInfo.hasPreviousPage && pageInfo.startCursor) {
+      this.previousPage.emit(pageInfo.startCursor);
     }
   }
 }
