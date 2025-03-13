@@ -7,8 +7,11 @@
 @if (showRepositoryDetails()) {
   <lx-card>
     <div class="list-view">
+      <div class="back-button" (click)="goBack()" aria-label="Back button">
+        <img src="/assets/icons/back.png" alt="Back" />
+      </div>
       <h3>{{ repository().owner.login }}/{{ repository().name }}</h3>
-      <h3>Issues</h3>
+      <div class="chip">Issues</div>
       <table class="table">
         @for (issue of issues(); track issue.node.title) {
           <tr>

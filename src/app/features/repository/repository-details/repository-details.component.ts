@@ -19,6 +19,7 @@ import {
 } from '../interfaces/repository.interface';
 import { CardComponent } from '../../../shared/basic-components/card/card.component';
 import { LoadingState } from '../interfaces/state.interface';
+import { Location } from '@angular/common';
 import { catchError, of } from 'rxjs';
 
 @Component({
@@ -30,6 +31,7 @@ import { catchError, of } from 'rxjs';
 export class RepositoryDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private githubService = inject(GitHubService);
+  private location = inject(Location);
 
   state = signal<LoadingState>({
     loading: false,
@@ -111,5 +113,9 @@ export class RepositoryDetailsComponent implements OnInit {
 
   fetchPreviousPage(cursor: string) {
     this.loadRepositoryDetails(cursor, 'before');
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

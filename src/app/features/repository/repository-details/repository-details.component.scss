@@ -18,10 +18,45 @@
   }
 }
 
+.back-button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(128, 128, 128, 0.2);
+  transform: scale(1.1);
+}
+
 .issue-icon {
   height: 20px;
 }
 
 td:first-child {
   width: 20px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 16px;
+  background-color: #e0e0e0;
+  color: #333;
+  cursor: default;
+  transition: background-color 0.3s ease;
+}
+
+.chip:hover {
+  background-color: #d6d6d6;
 }
