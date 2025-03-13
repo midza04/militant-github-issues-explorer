@@ -11,6 +11,7 @@ import {
   RepositoryParams,
   RepositoryResponse,
 } from '../../features/repository/interfaces/repository.interface';
+import { TokenValidationResponse } from '../../features/token-entry/interfaces/token-entry.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +19,9 @@ import {
 export class GitHubService {
   private apollo = inject(Apollo);
 
-  validateToken(token: string): Observable<any> {
+  validateToken(token: string): Observable<TokenValidationResponse> {
     return this.apollo
-      .query({
+      .query<TokenValidationResponse>({
         query: loginQuery,
         context: {
           headers: {
