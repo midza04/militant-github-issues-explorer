@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GitHubService } from '../../../shared/services/github.service';
 import { TokenValidationResponse } from '../interfaces/token-entry.interface';
@@ -7,20 +7,19 @@ import { TokenValidationResponse } from '../interfaces/token-entry.interface';
   providedIn: 'root',
 })
 export class TokenService {
-  private token?: string | undefined;
-
-  constructor(private githubService: GitHubService) {}
+  private githubService = inject(GitHubService);
+  private token = signal<string | undefined>('');
 
   async setToken(token: string) {
-    this.token = token;
+    this.token.set(token);
   }
 
   getToken(): string | undefined {
-    return this.token;
+    return this.token();
   }
 
   clearToken() {
-    this.token = undefined;
+    this.token.set(undefined);
   }
 
   validateToken(token: string): Observable<TokenValidationResponse> {
