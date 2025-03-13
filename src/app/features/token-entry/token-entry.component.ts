@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TokenService } from './data-access/token.service';
-import { CardComponent } from '../shared/basic-components/card/card.component';
+import { CardComponent } from '../../shared/basic-components/card/card.component';
 import {
   TokenEntry,
   TokenValidationResponse,

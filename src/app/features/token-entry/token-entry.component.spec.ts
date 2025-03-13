@@ -5,7 +5,7 @@ import {
 } from '@ngneat/spectator';
 import { TokenEntryComponent } from './token-entry.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CardComponent } from '../shared/basic-components/card/card.component';
+import { CardComponent } from '../../shared/basic-components/card/card.component';
 import { TokenService } from './data-access/token.service';
 import { Router } from '@angular/router';
 import { TokenValidationResponse } from './interfaces/token-entry.interface';

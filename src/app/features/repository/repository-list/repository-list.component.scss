@@ -52,19 +52,21 @@
 }
 
 .star-column {
-  align-items: center; // Keep items aligned in a row
-  gap: 16px; // Space between icon and text
-  white-space: nowrap; // Prevent wrapping inside the column
-  justify-content: flex-start; // Align items to the start of the column
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+  justify-content: flex-start;
 
   .star-icon {
     width: 16px;
     height: 16px;
+    margin-right: 10px;
   }
 
   .star-count {
     font-size: 14px;
     font-weight: bold;
     color: #656d76;
+    align-content: center;
   }
 }

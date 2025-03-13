@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { TokenService } from '../../../token-entry/data-access/token.service';
+import { TokenService } from '../../../features/token-entry/data-access/token.service';
 
 @Component({
   selector: 'lx-header',

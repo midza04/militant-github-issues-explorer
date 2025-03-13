@@ -1,15 +1,15 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GitHubService } from '../../shared/services/github.service';
+import { GitHubService } from '../../../shared/services/github.service';
 import {
   PageInfo,
   RepositoryEdge,
   RepositoryParams,
   RepositoryResponse,
 } from '../interfaces/repository.interface';
-import { PaginationComponent } from '../../shared/basic-components/pagination/pagination.component';
-import { CardComponent } from '../../shared/basic-components/card/card.component';
-import { NumbersPipe } from '../../utils/pipes/numbers.pipe';
+import { PaginationComponent } from '../../../shared/basic-components/pagination/pagination.component';
+import { CardComponent } from '../../../shared/basic-components/card/card.component';
+import { NumbersPipe } from '../../../utils/pipes/numbers.pipe';
 import { DatePipe } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { LoadingState } from '../interfaces/state.interface';

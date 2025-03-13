@@ -7,32 +7,35 @@
 @if (showRepositoryDetails()) {
   <lx-card>
     <div class="list-view">
-      <h1>{{ repository.owner.login }}/{{ repository.name }}</h1>
+      <h3>{{ repository().owner.login }}/{{ repository().name }}</h3>
       <h3>Issues</h3>
       <table class="table">
-        @for (issueEdge of issues; track issueEdge.node.title) {
+        @for (issue of issues(); track issue.node.title) {
           <tr>
             <td>
               <img
-                aria-label="issue icon"
                 class="issue-icon"
                 src="/assets/icons/issue.svg"
                 alt="Issue Icon"
               />
             </td>
             <td>
-              <a [href]="issueEdge.node.url" target="_blank">{{
-                issueEdge.node.title
+              <a [href]="issue.node.url" target="_blank">{{
+                issue.node.title
               }}</a>
             </td>
             <td>
-              <span>{{ issueEdge.node.createdAt | date }}</span>
+              <span>
+                <strong>
+                  {{ issue.node.createdAt | date: "dd MMM YYYY HH:mm:ss" }}
+                </strong>
+              </span>
             </td>
           </tr>
         }
       </table>
       <lx-pagination
-        [pageInfo]="pageInfo"
+        [pageInfo]="pageInfo()"
         (nextPage)="fetchNextPage($event)"
         (previousPage)="fetchPreviousPage($event)"
       />

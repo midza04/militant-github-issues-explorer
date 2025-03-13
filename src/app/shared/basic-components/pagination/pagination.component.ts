@@ -1,11 +1,18 @@
-import { Component, EventEmitter, input, Input, Output } from '@angular/core';
-import { PageInfo } from '../../../repository/interfaces/repository.interface';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { PageInfo } from '../../../features/repository/interfaces/repository.interface';
 
 @Component({
   selector: 'lx-pagination',
   imports: [],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
   @Input() pageInfo!: PageInfo;

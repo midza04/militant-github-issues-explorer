@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { TokenEntryComponent } from './token-entry/token-entry.component';
+import { TokenEntryComponent } from './features/token-entry/token-entry.component';
 import { LayoutComponent } from './shared/layout/layout.component';
-import { RepositoryListComponent } from './repository/repository-list/repository-list.component';
-import { RepositoryDetailsComponent } from './repository/repository-details/repository-details.component';
+import { RepositoryListComponent } from './features/repository/repository-list/repository-list.component';
+import { RepositoryDetailsComponent } from './features/repository/repository-details/repository-details.component';
 import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [

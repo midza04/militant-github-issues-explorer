@@ -6,7 +6,7 @@ import {
   fetchRepositoriesQuery,
   loginQuery,
 } from './queries/repositories.queries';
-import { RepositoryParams } from '../../repository/interfaces/repository.interface';
+import { RepositoryParams } from '../../features/repository/interfaces/repository.interface';
 
 @Injectable({
   providedIn: 'root',
