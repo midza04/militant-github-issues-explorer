@@ -51,7 +51,7 @@ export class RepositoryDetailsComponent implements OnInit {
   });
 
   repository = computed<Repository>(() => {
-    return this.state().data.data.repository;
+    return this.state().data.repository;
   });
 
   issues = computed<IssueEdge[]>(() => {
@@ -98,7 +98,7 @@ export class RepositoryDetailsComponent implements OnInit {
           return of(null);
         }),
       )
-      .subscribe((response: RepositoryDetailsResponse) => {
+      .subscribe((response: RepositoryDetailsResponse | null) => {
         this.state.update((state) => ({
           ...state,
           data: response,

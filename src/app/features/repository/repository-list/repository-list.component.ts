@@ -35,11 +35,11 @@ export class RepositoryListComponent implements OnInit {
   });
 
   pageInfo = computed<PageInfo>(() => {
-    return this.state().data?.data?.search?.pageInfo;
+    return this.state().data?.search?.pageInfo;
   });
 
   repositories = computed<RepositoryEdge[]>(() => {
-    return this.state().data.data.search.edges;
+    return this.state().data.search.edges;
   });
 
   loading = computed<boolean>(() => {
@@ -78,7 +78,7 @@ export class RepositoryListComponent implements OnInit {
           return of(null);
         }),
       )
-      .subscribe((data: RepositoryResponse) => {
+      .subscribe((data: RepositoryResponse | null) => {
         this.state.update((state) => ({
           ...state,
           data,
