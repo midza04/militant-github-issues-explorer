@@ -1,0 +1,41 @@
+@startuml
+skinparam componentStyle rectangle
+
+package "GitHub Issue Explorer" {
+  [AppComponent] as App
+  [Router Module] as Router
+  [TokenEntryComponent] as TEC
+  [RepositoryListComponent] as RLC
+  [RepositoryDetailComponent] as RDC
+  [PaginationComponent] as PC
+  [HeaderComponent] as Header
+
+  package "Services" {
+    [TokenService] as TS
+
+  }
+
+  package "GitHub GraphQl" {
+   [GitHubService] as GS
+  }
+
+  package "Guards" {
+    [TokenGuard] as TG
+  }
+}
+
+App --> Router : Bootstraps routing
+Router --> TEC : Route '/'
+Router --> RLC : Route '/repositories'
+Router --> RDC : Route '/:owner/:repositoryName'
+RLC --> PC : Contains Pagination UI
+RDC --> PC : Contains Pagination UI
+TEC --> TS : Uses for token storage/validation
+TS --> GS : Uses to validate token & fetch data
+RLC --> GS : Fetches repository list data
+RDC --> GS : Fetches repository details & issues
+Header --> TS : "Change API Token" action
+Router --> TG : Applies guard on secured routes
+TG --> TS : Checks token validity
+
+@enduml
