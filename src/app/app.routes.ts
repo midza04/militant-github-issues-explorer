@@ -4,6 +4,7 @@ import { LayoutComponent } from './shared/layout/layout.component';
 import { RepositoryListComponent } from './features/repository/repository-list/repository-list.component';
 import { RepositoryDetailsComponent } from './features/repository/repository-details/repository-details.component';
 import { authGuard } from './shared/guards/auth.guard';
+import { PageNotFoundComponent } from './features/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
   { path: '', component: TokenEntryComponent },
@@ -19,4 +20,6 @@ export const routes: Routes = [
       },
     ],
   },
+  { path: '404', component: PageNotFoundComponent },
+  { path: '**', redirectTo: '/404' },
 ];
